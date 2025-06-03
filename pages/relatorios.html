@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relatórios | PharmaGestão</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #0288d1;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    header h2 {
+      font-size: 24px;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    }
+
+    section {
+      margin-bottom: 40px;
+    }
+
+    section h3 {
+      color: #0288d1;
+      font-weight: 700;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #0288d1;
+      padding-bottom: 8px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #01579b;
+    }
+
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #b3e5fc;
+      background-color: #fff;
+      font-size: 14px;
+      margin-bottom: 20px;
+      transition: border-color 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #0288d1;
+      outline: none;
+    }
+
+    button {
+      background-color: #03a9f4;
+      color: white;
+      padding: 12px 28px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0288d1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 10px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e1f5fe;
+      color: #0277bd;
+    }
+
+    .no-data {
+      text-align: center;
+      font-style: italic;
+      color: #666;
+      margin-top: 15px;
+    }
+
+    td.status-inativo {
+      color: #c62828;
+      font-weight: bold;
+    }
+
+    td.status-ativo {
+      color: #2e7d32;
+      font-weight: bold;
+    }
+
+    td.falta {
+      color: #d32f2f;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h2>Relatórios</h2>
+  </header>
+
+  <div class="container">
+
+    <!-- Relatório de Vendas -->
+    <section>
+      <h3>Relatório de Vendas</h3>
+      <form id="formVendas">
+        <label for="dataInicio">Data Início</label>
+        <input type="date" id="dataInicio" required />
+
+        <label for="dataFim">Data Fim</label>
+        <input type="date" id="dataFim" required />
+
+        <button type="submit">Gerar Relatório</button>
+      </form>
+      <table id="tabelaVendas" style="display:none;">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Valor Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dados gerados dinamicamente -->
+        </tbody>
+      </table>
+      <p class="no-data" id="msgVendas">Nenhum relatório gerado.</p>
+    </section>
+
+    <!-- Relatório de Estoque -->
+    <section>
+      <h3>Relatório de Estoque</h3>
+      <button id="btnEstoque">Gerar Relatório de Produtos em Falta</button>
+      <table id="tabelaEstoque" style="display:none;">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Quantidade Atual</th>
+            <th>Estoque Mínimo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dados gerados dinamicamente -->
+        </tbody>
+      </table>
+      <p class="no-data" id="msgEstoque">Nenhum relatório gerado.</p>
+    </section>
+
+    <!-- Relatório de Clientes -->
+    <section>
+      <h3>Relatório de Clientes</h3>
+      <label for="filtroClientes">Filtrar por status</label>
+      <select id="filtroClientes">
+        <option value="todos" selected>Todos</option>
+        <option value="ativos">Ativos</option>
+        <option value="inativos">Inativos</option>
+      </select>
+      <button id="btnClientes">Gerar Relatório</button>
+      <table id="tabelaClientes" style="display:none;">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>Email</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Dados gerados dinamicamente -->
+        </tbody>
+      </table>
+      <p class="no-data" id="msgClientes">Nenhum relatório gerado.</p>
+    </section>
+
+  </div>
+
+  <script>
+    // Exemplo simples de dados para demonstração
+    const vendasMock = [
+      { data: '2025-05-01', produto: 'Paracetamol 500mg', quantidade: 10, valorTotal: 50.00 },
+      { data: '2025-05-03', produto: 'Dipirona 1g', quantidade: 5, valorTotal: 30.00 },
+      { data: '2025-05-05', produto: 'Xaropes variados', quantidade: 8, valorTotal: 120.00 }
+    ];
+
+    const estoqueMock = [
+      { produto: 'Paracetamol 500mg', qtdAtual: 5, estoqueMinimo: 10 },
+      { produto: 'Dipirona 1g', qtdAtual: 15, estoqueMinimo: 10 },
+      { produto: 'Aspirina', qtdAtual: 2, estoqueMinimo: 5 },
+    ];
+
+    const clientesMock = [
+      { nome: 'João Silva', cpf: '123.456.789-00', email: 'joao@email.com', status: 'ativo' },
+      { nome: 'Maria Souza', cpf: '987.654.321-00', email: 'maria@email.com', status: 'inativo' },
+      { nome: 'Pedro Lima', cpf: '555.444.333-22', email: 'pedro@email.com', status: 'ativo' }
+    ];
+
+    // Função para limpar tabela
+    function limparTabela(tabelaId) {
+      const tbody = document.querySelector(`#${tabelaId} tbody`);
+      if (tbody) tbody.innerHTML = '';
+    }
+
+    // Vendas
+    document.getElementById('formVendas').addEventListener('submit', e => {
+      e.preventDefault();
+      const inicio = document.getElementById('dataInicio').value;
+      const fim = document.getElementById('dataFim').value;
+      const tabela = document.getElementById('tabelaVendas');
+      const msg = document.getElementById('msgVendas');
+      const tbody = tabela.querySelector('tbody');
+
+      limparTabela('tabelaVendas');
+
+      if (!inicio || !fim || fim < inicio) {
+        alert('Por favor, informe um intervalo de datas válido.');
+        return;
+      }
+
+      const resultados = vendasMock.filter(v =>
+        v.data >= inicio && v.data <= fim
+      );
+
+      if (resultados.length === 0) {
+        tabela.style.display = 'none';
+        msg.style.display = 'block';
+        msg.textContent = 'Nenhum registro encontrado para o período informado.';
+        return;
+      }
+
+      resultados.forEach(v => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${v.data}</td>
+          <td>${v.produto}</td>
+          <td>${v.quantidade}</td>
+          <td>R$ ${v.valorTotal.toFixed(2)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      msg.style.display = 'none';
+      tabela.style.display = 'table';
+    });
+
+    // Estoque
+    document.getElementById('btnEstoque').addEventListener('click', () => {
+      const tabela = document.getElementById('tabelaEstoque');
+      const msg = document.getElementById('msgEstoque');
+      const tbody = tabela.querySelector('tbody');
+
+      limparTabela('tabelaEstoque');
+
+      const produtosFaltando = estoqueMock.filter(p => p.qtdAtual < p.estoqueMinimo);
+
+      if (produtosFaltando.length === 0) {
+        tabela.style.display = 'none';
+        msg.style.display = 'block';
+        msg.textContent = 'Nenhum produto está com estoque abaixo do mínimo.';
+        return;
+      }
+
+      produtosFaltando.forEach(p => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${p.produto}</td>
+          <td>${p.qtdAtual}</td>
+          <td>${p.estoqueMinimo}</td>
+          <td style="color: red; font-weight: bold;">Em Falta</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      msg.style.display = 'none';
+      tabela.style.display = 'table';
+    });
+
+    // Clientes
+    document.getElementById('btnClientes').addEventListener('click', () => {
+      const filtro = document.getElementById('filtroClientes').value;
+      const tabela = document.getElementById('tabelaClientes');
+      const msg = document.getElementById('msgClientes');
+      const tbody = tabela.querySelector('tbody');
+
+      limparTabela('tabelaClientes');
+
+      let resultados = clientesMock;
+      if (filtro === 'ativos') {
+        resultados = clientesMock.filter(c => c.status === 'ativo');
+      } else if (filtro === 'inativos') {
+        resultados = clientesMock.filter(c => c.status === 'inativo');
+      }
+
+      if (resultados.length === 0) {
+        tabela.style.display = 'none';
+        msg.style.display = 'block';
+        msg.textContent = 'Nenhum cliente encontrado para o filtro selecionado.';
+        return;
+      }
+
+      resultados.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${c.nome}</td>
+          <td>${c.cpf}</td>
+          <td>${c.email}</td>
+          <td>${c.status === 'ativo' ? 'Ativo' : 'Inativo'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      msg.style.display = 'none';
+      tabela.style.display = 'table';
+    });
+  </script>
+
+</body>
+
+</html>

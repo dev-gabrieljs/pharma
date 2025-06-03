@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nova Venda | PharmaGestão</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body,
+    html {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #f0f7ff; /* azul bebê claro */
+      color: #333;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #81d4fa; /* azul bebê */
+      color: #003049; /* azul escuro */
+      padding: 24px 30px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      font-weight: 700;
+      font-size: 28px;
+      user-select: none;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 40px auto 60px;
+      background: #fff;
+      padding: 36px 32px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(33, 150, 243, 0.15);
+    }
+
+    h3 {
+      margin-bottom: 24px;
+      color: #1565c0; /* azul escuro */
+      font-size: 22px;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+      text-align: right;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #1565c0;
+      font-size: 15px;
+      user-select: none;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      border: 2px solid #90caf9;
+      border-radius: 10px;
+      background-color: #f9fbff;
+      color: #333;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline-offset: 2px;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #42a5f5;
+      box-shadow: 0 0 10px #42a5f5aa;
+      outline: none;
+      background-color: #e8f1ff;
+    }
+
+    button {
+      background-color: #2196f3;
+      color: white;
+      padding: 14px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+      user-select: none;
+    }
+
+    button:hover,
+    button:focus {
+      background-color: #1565c0;
+      box-shadow: 0 7px 20px rgba(21, 101, 192, 0.6);
+      outline: none;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 36px;
+      font-size: 16px;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 14px 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #e3f2fd;
+      color: #1565c0;
+      user-select: none;
+    }
+
+    .total {
+      text-align: right;
+      font-weight: 700;
+      font-size: 20px;
+      margin-top: 28px;
+      color: #1565c0;
+      user-select: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    Nova Venda
+  </header>
+
+  <div class="container">
+    <h3>Informações da Venda</h3>
+    <form id="form-venda" onsubmit="return false;">
+      <!-- Cliente -->
+      <div>
+        <label for="nomeCliente">Nome do Cliente</label>
+        <input type="text" id="nomeCliente" required autocomplete="name" placeholder="Digite o nome completo" />
+      </div>
+      <div>
+        <label for="cpfCliente">CPF</label>
+        <input type="text" id="cpfCliente" required placeholder="000.000.000-00" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Digite o CPF no formato 000.000.000-00" />
+      </div>
+
+      <!-- Produto -->
+      <div>
+        <label for="produto">Produto</label>
+        <select id="produto" required>
+          <option value="">Selecione...</option>
+          <option value="Dipirona">Dipirona 500mg</option>
+          <option value="Ibuprofeno">Ibuprofeno 600mg</option>
+          <option value="Paracetamol">Paracetamol 750mg</option>
+        </select>
+      </div>
+      <div>
+        <label for="quantidade">Quantidade</label>
+        <input type="number" id="quantidade" min="1" required />
+      </div>
+
+      <div>
+        <label for="precoUnit">Preço Unitário (R$)</label>
+        <input type="number" id="precoUnit" min="0" step="0.01" required />
+      </div>
+
+      <div>
+        <label for="dataVenda">Data</label>
+        <input type="date" id="dataVenda" required />
+      </div>
+
+      <!-- Pagamento -->
+      <div>
+        <label for="pagamento">Forma de Pagamento</label>
+        <select id="pagamento" required>
+          <option value="">Escolha...</option>
+          <option>Dinheiro</option>
+          <option>Cartão Crédito</option>
+          <option>Cartão Débito</option>
+          <option>Pix</option>
+        </select>
+      </div>
+
+      <div class="full">
+        <button type="button" onclick="adicionarProduto()">Adicionar Produto</button>
+      </div>
+    </form>
+
+    <!-- Tabela de produtos adicionados -->
+    <h3>Itens da Venda</h3>
+    <table id="tabelaItens" aria-label="Itens da venda">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Qtd</th>
+          <th>Unitário (R$)</th>
+          <th>Total (R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Itens vão aparecer aqui -->
+      </tbody>
+    </table>
+
+    <p class="total">Total Geral: R$ <span id="totalGeral">0.00</span></p>
+
+    <div style="text-align: right; margin-top: 20px;">
+      <button onclick="finalizarPedido()">Finalizar Pedido</button>
+    </div>
+  </div>
+
+  <script>
+    let totalGeral = 0;
+
+    function adicionarProduto() {
+      const produto = document.getElementById("produto").value;
+      const qtdInput = document.getElementById("quantidade");
+      const precoInput = document.getElementById("precoUnit");
+
+      const qtd = parseInt(qtdInput.value);
+      const preco = parseFloat(precoInput.value);
+
+      if (!produto) {
+        alert("Selecione um produto.");
+        return;
+      }
+      if (!qtd || qtd <= 0) {
+        alert("Informe uma quantidade válida.");
+        qtdInput.focus();
+        return;
+      }
+      if (!preco || preco <= 0) {
+        alert("Informe um preço unitário válido.");
+        precoInput.focus();
+        return;
+      }
+
+      const total = qtd * preco;
+      totalGeral += total;
+
+      const tabela = document.getElementById("tabelaItens").querySelector("tbody");
+      const linha = document.createElement("tr");
+
+      linha.innerHTML = `
+        <td>${produto}</td>
+        <td>${qtd}</td>
+        <td>R$ ${preco.toFixed(2)}</td>
+        <td>R$ ${total.toFixed(2)}</td>
+      `;
+      tabela.appendChild(linha);
+
+      document.getElementById("totalGeral").innerText = totalGeral.toFixed(2);
+
+      // Limpa campos de produto para novo item
+      document.getElementById("produto").value = "";
+      qtdInput.value = "";
+      precoInput.value = "";
+      qtdInput.focus();
+    }
+
+    function finalizarPedido() {
+      const nomeCliente = document.getElementById("nomeCliente").value.trim();
+      const cpfCliente = document.getElementById("cpfCliente").value.trim();
+      const dataVenda = document.getElementById("dataVenda").value.trim();
+      const pagamento = document.getElementById("pagamento").value;
+
+      if (!nomeCliente || !cpfCliente || !dataVenda || !pagamento) {
+        alert("Por favor, preencha todos os campos obrigatórios da venda.");
+        return;
+      }
+
+      if (totalGeral === 0) {
+        alert("Adicione pelo menos um produto à venda.");
+        return;
+      }
+
+      alert(`Pedido finalizado com sucesso!\nCliente: ${nomeCliente}\nTotal: R$ ${totalGeral.toFixed(2)}`);
+
+      // Aqui você pode integrar com backend ou salvar a venda
+
+      // Resetar formulário e tabela
+      document.getElementById("form-venda").reset();
+      document.getElementById("tabelaItens").querySelector("tbody").innerHTML = "";
+      totalGeral = 0;
+      document.getElementById("totalGeral").innerText = "0.00";
+    }
+  </script>
+
+</body>
+
+</html>

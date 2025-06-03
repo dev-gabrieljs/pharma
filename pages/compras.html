@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão de Compras | PharmaGestão</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+
+    h1,
+    h2 {
+        color: #1565c0; /* Azul escuro */
+        margin-bottom: 16px;
+    }
+
+    form {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+    }
+
+    form label {
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+        margin-bottom: 12px;
+        color: #1565c0; /* Azul escuro */
+    }
+
+    form input,
+    form select {
+        margin-top: 4px;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #90caf9; /* Azul bebê */
+        border-radius: 4px;
+        background-color: #e3f2fd; /* Azul bem claro */
+        color: #0d47a1; /* Azul escuro */
+        transition: border-color 0.3s ease;
+    }
+
+    form input:focus,
+    form select:focus {
+        border-color: #42a5f5; /* Azul médio no foco */
+        background-color: #fff;
+        outline: none;
+    }
+
+    button {
+        background-color: #03a9f4; /* Azul vivo */
+        color: white;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 6px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 8px;
+        font-weight: 700;
+    }
+
+    button:hover {
+        background-color: #0288d1; /* Azul escuro hover */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    table thead {
+        background-color: #bbdefb; /* Azul bebê claro */
+    }
+
+    table th,
+    table td {
+        padding: 12px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+        font-size: 15px;
+        color: #1565c0; /* Azul escuro */
+    }
+
+    table td button {
+        background-color: #d32f2f; /* Vermelho para ação */
+        padding: 6px 12px;
+        font-size: 13px;
+        border-radius: 4px;
+        border: none;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    table td button:hover {
+        background-color: #b71c1c;
+    }
+
+    @media (max-width: 768px) {
+        form,
+        table {
+            width: 100%;
+        }
+
+        table th,
+        table td {
+            font-size: 14px;
+        }
+    }
+</style>
+
+
+</head>
+
+<body>
+    <h1>Gestão de Compras</h1>
+
+    <form id="formCompra">
+        <label>
+            Fornecedor:
+            <input type="text" name="fornecedor" required />
+        </label>
+        <label>
+            Produto:
+            <input type="text" name="produto" required />
+        </label>
+        <label>
+            Quantidade:
+            <input type="number" name="quantidade" required />
+        </label>
+        <label>
+            Data da Compra:
+            <input type="date" name="dataCompra" required />
+        </label>
+        <label>
+            Prazo de Entrega:
+            <input type="date" name="prazoEntrega" required />
+        </label>
+        <button type="submit">Registrar Compra</button>
+    </form>
+
+    <h2>Compras Registradas</h2>
+    <table id="tabelaCompras">
+        <thead>
+            <tr>
+                <th>Fornecedor</th>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>Data</th>
+                <th>Prazo</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Linhas inseridas dinamicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        const form = document.getElementById('formCompra');
+        const tabela = document.getElementById('tabelaCompras').querySelector('tbody');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const dados = new FormData(form);
+            const novaLinha = document.createElement('tr');
+
+            novaLinha.innerHTML = `
+        <td>${dados.get('fornecedor')}</td>
+        <td>${dados.get('produto')}</td>
+        <td>${dados.get('quantidade')}</td>
+        <td>${dados.get('dataCompra')}</td>
+        <td>${dados.get('prazoEntrega')}</td>
+        <td><button onclick="this.closest('tr').remove()">🗑️ Excluir</button></td>
+      `;
+
+            tabela.appendChild(novaLinha);
+            form.reset();
+        });
+    </script>
+</body>
+
+</html>

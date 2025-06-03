@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ajuda | PharmaGestão</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #0288d1;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    header h2 {
+      font-size: 24px;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    }
+
+    h3 {
+      color: #0288d1;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #0288d1;
+      padding-bottom: 8px;
+    }
+
+    section {
+      margin-bottom: 30px;
+    }
+
+    p {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    ul {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #01579b;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 6px;
+      border: 1px solid #b3e5fc;
+      margin-bottom: 20px;
+      transition: border-color 0.3s ease;
+      resize: vertical;
+      background-color: #ffffff;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #0288d1;
+    }
+
+    button {
+      background-color: #03a9f4;
+      color: white;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0288d1;
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h2>Central de Ajuda - PharmaGestão</h2>
+  </header>
+
+  <div class="container">
+    <section>
+      <h3>Como utilizar o sistema</h3>
+      <p>O PharmaGestão é um sistema pensado para facilitar o controle de sua farmácia. Seguem algumas dicas rápidas para começar:</p>
+      <ul>
+        <li><strong>Clientes:</strong> Cadastre e gerencie informações dos seus clientes.</li>
+        <li><strong>Vendas:</strong> Registre as vendas com detalhes e acompanhe o histórico.</li>
+        <li><strong>Estoque:</strong> Controle o estoque para evitar faltas e excessos.</li>
+        <li><strong>Fornecedores:</strong> Mantenha uma lista atualizada dos seus fornecedores.</li>
+        <li><strong>Relatórios:</strong> Gere relatórios para análises financeiras e de estoque.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Perguntas frequentes (FAQ)</h3>
+      <ul>
+        <li><strong>Como cadastrar um novo cliente?</strong><br />Acesse o menu <em>Clientes</em>, clique em "Novo Cliente" e preencha os dados solicitados.</li>
+        <li><strong>Posso editar uma venda já registrada?</strong><br />Atualmente, não é possível editar vendas finalizadas. Você pode registrar uma venda de estorno se necessário.</li>
+        <li><strong>Como faço para atualizar o estoque?</strong><br />Acesse o menu <em>Estoque</em> e utilize as opções de entrada e saída para ajustar as quantidades.</li>
+        <li><strong>Quem posso contatar para suporte?</strong><br />Use o formulário abaixo para enviar dúvidas ou solicitação de suporte.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Contato e suporte</h3>
+      <form id="formContato">
+        <label for="nome">Seu nome</label>
+        <input type="text" id="nome" placeholder="Digite seu nome" required />
+
+        <label for="email">Seu e-mail</label>
+        <input type="email" id="email" placeholder="Digite seu e-mail" required />
+
+        <label for="mensagem">Mensagem</label>
+        <textarea id="mensagem" rows="5" placeholder="Descreva sua dúvida ou problema" required></textarea>
+
+        <button type="submit">Enviar mensagem</button>
+      </form>
+    </section>
+  </div>
+
+  <p class="footer-note">© 2025 PharmaGestão - Todos os direitos reservados.</p>
+
+  <script>
+    document.getElementById('formContato').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const nome = document.getElementById('nome').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const mensagem = document.getElementById('mensagem').value.trim();
+
+      if (!nome || !email || !mensagem) {
+        alert('Por favor, preencha todos os campos antes de enviar.');
+        return;
+      }
+
+      alert(`Obrigado, ${nome}! Sua mensagem foi enviada com sucesso.`);
+      this.reset();
+    });
+  </script>
+
+</body>
+</html>

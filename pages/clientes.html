@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadastro de Clientes</title>
+  <style>
+    /* Reset básico */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #e6f0fb; /* Fundo azul bebê claro */
+      color: #1a2636; /* Texto escuro */
+      height: 100%;
+      line-height: 1.5;
+    }
+
+    header {
+      background-color: #81d4fa; /* Azul bebê */
+      color: #003049;
+      padding: 24px 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      border-radius: 0 0 12px 12px;
+      font-weight: 700;
+      font-size: 26px;
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+
+    .formulario {
+      max-width: 480px;
+      background-color: #fff;
+      margin: 40px auto 60px;
+      padding: 32px 28px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(33, 150, 243, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .formulario:hover {
+      box-shadow: 0 12px 30px rgba(33, 150, 243, 0.3);
+    }
+
+    .formulario label {
+      font-weight: 600;
+      color: #1565c0; /* Azul mais escuro */
+      margin-bottom: 6px;
+      font-size: 15px;
+      user-select: none;
+    }
+
+    .formulario input {
+      padding: 12px 14px;
+      background-color: #f9faff;
+      color: #1a2636;
+      border: 2px solid #90caf9; /* Azul bebê borda */
+      border-radius: 10px;
+      font-size: 16px;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      outline-offset: 2px;
+    }
+
+    .formulario input:focus {
+      border-color: #42a5f5;
+      box-shadow: 0 0 8px #42a5f5aa;
+      outline: none;
+      background-color: #f0f7ff;
+    }
+
+    .formulario button {
+      background-color: #2196f3; /* Azul médio */
+      color: white;
+      padding: 14px 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 10px rgba(33, 150, 243, 0.4);
+      user-select: none;
+    }
+
+    .formulario button:hover,
+    .formulario button:focus {
+      background-color: #1565c0;
+      box-shadow: 0 6px 16px rgba(21, 101, 192, 0.6);
+      outline: none;
+    }
+
+    /* Responsividade básica */
+    @media (max-width: 520px) {
+      .formulario {
+        margin: 20px 16px 40px;
+        padding: 24px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    Cadastro de Clientes
+  </header>
+
+  <form class="formulario" novalidate>
+    <label for="nome">Nome completo</label>
+    <input type="text" id="nome" name="nome" required autocomplete="name" placeholder="Digite o nome completo" />
+
+    <label for="cpf">CPF</label>
+    <input type="text" id="cpf" name="cpf" required placeholder="000.000.000-00" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: 000.000.000-00" />
+
+    <label for="telefone">Telefone</label>
+    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" pattern="\(?\d{2}\)?\s?\d{4,5}-?\d{4}" />
+
+    <label for="email">E-mail</label>
+    <input type="email" id="email" name="email" placeholder="email@exemplo.com" />
+
+    <button type="submit">Salvar</button>
+  </form>
+</body>
+
+</html>

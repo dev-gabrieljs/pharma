@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Assistente Virtual | PharmaGestão</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffffff; /* fundo branco */
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      color: #0288d1; /* azul bebê escuro */
+    }
+
+    #chatbox {
+      max-width: 700px;
+      background-color: #f9f9f9;
+      border: 1px solid #b3e5fc; /* borda azul claro */
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+      max-height: 400px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+
+    .mensagem {
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border-radius: 6px;
+      max-width: 80%;
+      white-space: pre-wrap;
+    }
+
+    .usuario {
+      background-color: #e3f2fd; /* azul bebê claro */
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .assistente {
+      background-color: #bbdefb; /* azul claro */
+      align-self: flex-start;
+    }
+
+    #entrada {
+      display: flex;
+      gap: 8px;
+    }
+
+    #entrada input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #90caf9;
+      border-radius: 6px;
+      font-size: 15px;
+      background-color: #ffffff;
+      color: #333;
+    }
+
+    #entrada button {
+      padding: 10px 16px;
+      background-color: #03a9f4;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #entrada button:hover {
+      background-color: #0288d1;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Assistente Virtual Farmacêutico</h1>
+
+  <div id="chatbox">
+    <div class="chat-area" id="chat"></div>
+    <div id="entrada">
+      <input type="text" id="pergunta" placeholder="Digite sua dúvida..." />
+      <button onclick="responder()">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("pergunta");
+
+    const respostas = [
+      {
+        palavras: ["dipirona"],
+        resposta: "💊 <b>Dipirona</b> é um analgésico e antitérmico. Não deve ser usada por quem tem alergia à pirazolona ou problemas no sangue."
+      },
+      {
+        palavras: ["paracetamol"],
+        resposta: "💊 <b>Paracetamol</b> é indicado para febre e dores leves. Evite superdosagem, pois pode causar danos ao fígado."
+      },
+      {
+        palavras: ["ibuprofeno"],
+        resposta: "💊 <b>Ibuprofeno</b> é um anti-inflamatório e analgésico. Pode causar irritação estomacal e é contraindicado para quem tem úlceras."
+      },
+      {
+        palavras: ["primeiros socorros", "emergência"],
+        resposta: "🚨 Em casos de emergência, ligue 192 (SAMU). Aplique primeiros socorros conforme a situação: manter vias aéreas livres, controlar sangramentos, etc."
+      },
+      {
+        palavras: ["febre", "calafrio", "febril", "estou com febre"],
+        resposta: "🌡️ A febre pode ser controlada com medicamentos como <b>paracetamol</b> ou <b>dipirona</b>. Beba bastante líquido e procure um médico se a febre persistir por mais de 48 horas ou ultrapassar 39ºC."
+      },
+      {
+        palavras: ["agendar", "consulta", "atendimento"],
+        resposta: "📅 Para agendar uma consulta, acesse o site da sua unidade de saúde, aplicativo do SUS, ou dirija-se presencialmente."
+      },
+      {
+        palavras: ["contraindicação", "quem não pode"],
+        resposta: "⚠️ As contraindicações variam por medicamento. Consulte a bula e converse com um farmacêutico antes de usar qualquer remédio."
+      },
+      {
+        palavras: ["obrigado", "valeu"],
+        resposta: "😊 Estou à disposição! Se precisar de mais ajuda, é só perguntar."
+      }
+    ];
+
+    function adicionarMensagem(texto, classe) {
+      const msg = document.createElement("div");
+      msg.className = "mensagem " + classe;
+      msg.innerHTML = texto;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function buscarResposta(pergunta) {
+      const texto = pergunta.toLowerCase();
+      for (const item of respostas) {
+        if (item.palavras.some(p => texto.includes(p))) {
+          return item.resposta;
+        }
+      }
+      return "🤔 Desculpe, não encontrei uma resposta para isso. Tente reformular ou procure um farmacêutico.";
+    }
+
+    function responder() {
+      const texto = input.value.trim();
+      if (!texto) return;
+
+      adicionarMensagem(texto, "usuario");
+      input.value = "";
+
+      setTimeout(() => {
+        const resposta = buscarResposta(texto);
+        adicionarMensagem(resposta, "assistente");
+      }, 500);
+    }
+
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        responder();
+      }
+    });
+
+    window.onload = function () {
+      adicionarMensagem("👋 Olá! Sou seu assistente farmacêutico. Pergunte sobre medicamentos, contraindicações ou primeiros socorros.", "assistente");
+    };
+  </script>
+</body>
+
+</html>

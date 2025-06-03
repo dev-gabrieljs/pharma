@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Controle de Estoque | PharmaGestão</title>
+<style>
+  /* Reset e base */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background-color: #ffffff; /* fundo branco */
+    color: #333;
+    min-height: 100vh;
+  }
+
+  header {
+    background-color: #81d4fa; /* azul bebê */
+    color: #003049; /* azul escuro */
+    padding: 20px 30px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  header h2 {
+    font-size: 22px;
+  }
+
+  .container {
+    max-width: 1600px;
+    margin: 40px auto;
+    background: #ffffff; /* branco */
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+
+  h3 {
+    margin-bottom: 25px;
+    color: #1565c0; /* azul escuro */
+    font-size: 22px;
+  }
+
+  form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1565c0; /* azul escuro */
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #90caf9; /* azul bebê borda */
+    border-radius: 6px;
+    transition: border-color 0.3s;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+
+  input:focus,
+  select:focus {
+    outline: none;
+    border-color: #42a5f5; /* azul médio no foco */
+  }
+
+  button {
+    grid-column: span 2;
+    background-color: #03a9f4; /* azul vivo */
+    color: white;
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #0288d1; /* azul escuro no hover */
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    background-color: #fff;
+  }
+
+  th,
+  td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 15px;
+  }
+
+  th {
+    background-color: #e3f2fd; /* azul bebê claro */
+    font-weight: 700;
+    color: #1565c0; /* azul escuro */
+  }
+
+  tbody tr:hover {
+    background-color: #f1f8ff; /* azul muito claro no hover */
+  }
+
+  .total-estoque {
+    margin-top: 20px;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: right;
+    color: #1565c0; /* azul escuro */
+  }
+</style>
+
+</head>
+
+<body>
+
+  <header>
+    <h2>Controle de Estoque</h2>
+  </header>
+
+  <div class="container">
+    <h3>Adicionar Produto ao Estoque</h3>
+    <form id="form-estoque">
+      <div>
+        <label for="nomeProduto">Nome do Produto</label>
+        <input type="text" id="nomeProduto" required />
+      </div>
+
+      <div>
+        <label for="quantidadeProduto">Quantidade</label>
+        <input type="number" id="quantidadeProduto" min="1" required />
+      </div>
+
+      <div>
+        <label for="precoUnitario">Preço Unitário (R$)</label>
+        <input type="number" id="precoUnitario" min="0" step="0.01" required />
+      </div>
+
+      <div>
+        <label for="validadeProduto">Data de Validade</label>
+        <input type="date" id="validadeProduto" required />
+      </div>
+
+      <button type="submit">Adicionar Produto</button>
+    </form>
+
+    <h3>Produtos no Estoque</h3>
+    <table id="tabelaEstoque">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Quantidade</th>
+          <th>Preço Unitário (R$)</th>
+          <th>Validade</th>
+          <th>Total (R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Produtos serão adicionados aqui -->
+      </tbody>
+    </table>
+
+    <p class="total-estoque">Valor Total em Estoque: R$ <span id="totalEstoque">0.00</span></p>
+  </div>
+
+  <script>
+    const formEstoque = document.getElementById('form-estoque');
+    const tabelaEstoqueBody = document.querySelector('#tabelaEstoque tbody');
+    const totalEstoqueEl = document.getElementById('totalEstoque');
+
+    let valorTotalEstoque = 0;
+
+    formEstoque.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const nome = document.getElementById('nomeProduto').value.trim();
+      const quantidade = parseInt(document.getElementById('quantidadeProduto').value);
+      const precoUnit = parseFloat(document.getElementById('precoUnitario').value);
+      const validade = document.getElementById('validadeProduto').value;
+
+      if (!nome || quantidade <= 0 || precoUnit <= 0 || !validade) {
+        alert('Por favor, preencha todos os campos corretamente.');
+        return;
+      }
+
+      const totalProduto = quantidade * precoUnit;
+      valorTotalEstoque += totalProduto;
+
+      const linha = document.createElement('tr');
+      linha.innerHTML = `
+        <td>${nome}</td>
+        <td>${quantidade}</td>
+        <td>R$ ${precoUnit.toFixed(2)}</td>
+        <td>${validade}</td>
+        <td>R$ ${totalProduto.toFixed(2)}</td>
+      `;
+
+      tabelaEstoqueBody.appendChild(linha);
+      totalEstoqueEl.textContent = valorTotalEstoque.toFixed(2);
+
+      // Limpa o formulário para novo cadastro
+      formEstoque.reset();
+    });
+  </script>
+
+</body>
+
+</html>
