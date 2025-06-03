@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PharmaGestão - Sistema</title>
+  <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- Menu lateral -->
+    <aside class="sidebar">
+      <h2>PharmaGestão</h2>
+      <nav>
+        <ul>
+          <li><a href="#" onclick="carregarPagina('pages/clientes.html')">📋 Clientes</a></li>
+          <li><a href="#" onclick="carregarPagina('pages/vendas.html')">💰 Vendas</a></li>
+          <li><a href="#" onclick="carregarPagina('pages/estoque.html')">📦 Estoque</a></li>
+        </ul>
+
+        <div class="section-title">Gestão</div>
+        <ul>
+          <li><a href="#" onclick="carregarPagina('pages/compras.html')">🛒 Compras</a></li>
+          <li><a href="#" onclick="carregarPagina('pages/fornecedores.html')">🚚 Fornecedores</a></li>
+          <li><a href="#" onclick="carregarPagina('pages/usuarios.html')">👥 Usuários</a></li>
+          <li><a href="#" onclick="carregarPagina('pages/configuracoes.html')">⚙️ Configurações</a></li>
+        </ul>
+
+        <div class="section-title">Atendimento</div>
+        <ul>
+          <li><a href="#" onclick="carregarPagina('pages/assistente.html')">🤖 Assistente Virtual</a></li>
+        </ul>
+
+        <div class="section-title">Análise</div>
+        <ul>
+          <li><a href="#" onclick="carregarPagina('pages/relatorios.html')">📊 Relatórios</a></li>
+          <li><a href="#" onclick="carregarPagina('pages/ajuda.html')">❓ Ajuda</a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Conteúdo principal -->
+    <main class="content">
+      <header>
+        Dashboard | PharmaGestão
+      </header>
+      <iframe id="conteudo" src="pages/clientes.html" title="Conteúdo"></iframe>
+    </main>
+
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+
+</html>
